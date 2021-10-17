@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "First Technical Challenge";
+}
+
+
+<div class="text-center">
+    <h2 id="patientGroupCount" style="display:none;color:#3aab15;"></h2>
+
+    <button onclick="CallPatientGroupAPI();" class="btn btn-primary">Count Patient Group</button>
+
+    <hr />
+    <br/>
+    <h5 id="infoText" style="display:none;">API Request on button click looks like,</h5>
+    <img id="infoImage" style="display:none;height:400px;width:400px" src="~/Image/APIRequest.PNG" class="img-thumbnail" alt="API Request">
+
+</div>
+
+<script type="text/javascript">
+    var patientMatrix = {
+        "matrix": [
+            [1, 1, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0],
+            [1, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 0, 1],
+            [1, 1, 0, 1, 0, 0]
+        ]
+    };  
+    function CallPatientGroupAPI() {
+        $("#infoText").css("display", "block");
+        $("#infoImage").css("display", "");
+
+        $.ajax({
+            type: "POST",
+            url: "/api/Patient-groups/calculate",
+            contentType: "application/json;",
+            dataType:"json",
+            data: JSON.stringify(patientMatrix),
+            success: function (result) {
+                $("#patientGroupCount").text("Total Patient Group : " + result);
+                $("#patientGroupCount").css("display", "block");
+            },
+            error: function (error) {
+                alert(error.responseText);
+            }
+
+        });
+    }
+</script>
